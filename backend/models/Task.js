@@ -18,6 +18,10 @@ const deleteTask = async(taskId) => {
 
 }
 
+const modifyTask = async(taskId) => {
+    
+}
+
 module.exports = {
     getTaskList: getTaskList,
     getTask: getTask,
