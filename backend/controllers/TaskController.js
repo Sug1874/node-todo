@@ -71,7 +71,7 @@ const deleteTask = async(req, res) =>{
     }
 }
 
-const modifyTask = async(req, res) => {
+const modifyTasks = async(req, res) => {
     const userName = req.session.user_name
     const taskId = req.body.taskId
 

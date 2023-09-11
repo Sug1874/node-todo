@@ -3,5 +3,5 @@
     "dbPort":"3306",
     "dbUser":"root",
     "dbPassword" : "mysql",
-    "dbName": "work_manager"
+    "dbName": "node_todo"
 }

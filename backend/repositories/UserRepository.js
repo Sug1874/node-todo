@@ -25,7 +25,7 @@ const find = async(name) => {
         `SELECT * FROM user WHERE user_name="${name}"`
     )
     await client.end()
-    if(rows.length == 0){
+    if(rows.length < 1){
         return null
     }
     var userName = rows[0].user_name

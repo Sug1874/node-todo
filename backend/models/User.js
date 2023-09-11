@@ -3,7 +3,7 @@ const UserService = require("../services/UserService")
 
 const authenticate = async(userName, password) => {
     const user = await UserRepository.find(userName)
-    if(user.password == password){
+    if(user && user.password == password){
         return true
     }else{
         return false
@@ -11,7 +11,7 @@ const authenticate = async(userName, password) => {
 }
 
 const createUser = async(userName, password) => {
-    if(UserService.exist(userName)){
+    if(await UserService.exist(userName)){
         return false
     }
     await UserRepository.save(userName, password)

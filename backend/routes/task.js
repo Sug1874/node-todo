@@ -1,10 +1,12 @@
 const TaskController = require("../controllers/TaskController")
+const User = require("../models/User")
+const UserService = require("../services/UserService")
 
 const router = require("express").Router()
 
 // session
 router.use((req,res,next)=>{
-    if (!req.session.user_name) {
+    if (!req.session.user_name || !UserService.exist(req.session.user_name)) {
         res.status(401).send("user is not authenticated")
     }
     next()
