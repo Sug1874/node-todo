@@ -25,8 +25,13 @@ const saveTask = async(task) => {
     }
 }
 
-const deleteTask = async(taskId) => {
-    
+const deleteTask = async(userName, taskId) => {
+    const task = await TaskRepository.find(taskId)
+    if(!task || task.user_name != userName){
+        return false
+    }
+    await TaskRepository.remove(taskId)
+    return true
 }
 
 const modifyTask = async(taskId) => {

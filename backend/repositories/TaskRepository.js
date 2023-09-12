@@ -67,10 +67,10 @@ const update = async(task) => {
     return result
 }
 
-const remove = async(task) => {
+const remove = async(taskId) => {
     var client = await createConnection()
     let queryString;
-    queryString = `DELETE FROM task WHERE id = ${task.id}`
+    queryString = `DELETE FROM task WHERE task_id = ${taskId}`
     const [result, fields] = await client.execute(queryString)
     await client.end()
 }
@@ -82,5 +82,4 @@ module.exports = {
     remove: remove,
     find: find,
     findAll:findAll,
-    findNotYet: findNotYet
 }

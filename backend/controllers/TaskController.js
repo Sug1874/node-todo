@@ -64,8 +64,12 @@ const deleteTask = async(req, res) =>{
     const taskId = req.params.taskId
 
     try{
-        await Task.deleteTask(taskId)
-        res.status(200).end()
+        const result = await Task.deleteTask(userName, taskId)
+        if(result){
+            res.status(200).end()
+        }else{
+            res.status(400).end()
+        }
     }catch(e){
         res.status(500).send(e.message)
     }
