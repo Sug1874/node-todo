@@ -38,9 +38,21 @@ const modifyTask = async(taskId) => {
     
 }
 
+const getBeforeTasks = async(taskId) => {
+    const tasks = await TaskRepository.findBeforeTasks(taskId)
+    return tasks
+}
+
+const saveBeforeTasks = async(taskId, beforeTasks) => {
+
+}
+
 module.exports = {
     getTaskList: getTaskList,
     getTask: getTask,
     saveTask: saveTask,
-    deleteTask: deleteTask
+    deleteTask: deleteTask,
+    modifyTask: modifyTask,
+    getBeforeTasks: getBeforeTasks,
+    saveBeforeTasks: saveBeforeTasks
 }

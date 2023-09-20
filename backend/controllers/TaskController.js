@@ -22,7 +22,8 @@ const getTask = async(req, res) =>{
     try{
         const task = await Task.getTask(userName, taskId)
         if(task){
-            res.status(200).send(task)
+            const beforeTasks = await Task.getBeforeTasks(taskId)
+            res.status(200).send({task:task, before_tasks: beforeTasks})
         }else{
             res.status(400).end()
         }
@@ -35,6 +36,8 @@ const createTask = async(req, res) =>{
     const userName = req.session.user_name
     const task = req.body.task
     task.user_name = userName
+    // task_idのリスト
+    const before_tasks = req.body.before_tasks
 
     try{
         await Task.saveTask(task)
@@ -50,6 +53,9 @@ const updateTask = async(req, res) => {
     const taskId = req.params.taskId
     task.task_id = taskId
     task.user_name = userName
+
+    // task_idのリスト
+    const before_tasks = req.body.before_tasks
 
     try{
         await Task.saveTask(task)
@@ -87,7 +93,7 @@ const modifyTasks = async(req, res) => {
     }
 }
 
-    module.exports = {
+module.exports = {
     getTaskList: getTaskList,
     getTask: getTask,
     createTask: createTask,

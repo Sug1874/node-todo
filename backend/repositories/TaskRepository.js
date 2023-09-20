@@ -52,7 +52,7 @@ const findAll= async(userName) => {
 const save = async(task) => {
     var client = await createConnection()
     let queryString;
-    queryString = `INSERT INTO task (user_name, title, descriptyion, required_days, deadline) \
+    queryString = `INSERT INTO task (user_name, title, description, required_days, deadline) \
     VALUES ('${task.user_name}', '${task.title}', '${task.description}', ${task.required_days}, '${task.deadline}')`
     const [result, fields] = await client.query(queryString)
     await client.end()
@@ -75,6 +75,24 @@ const remove = async(taskId) => {
     await client.end()
 }
 
+const findBeforeTasks = async(taskId) => {
+    const client = await createConnection()
+    const queryString = `SELECT * FROM \
+                            (SELECT * FROM task_order WHERE after_task_id = ${taskId}) AS target_task_order \
+                            INNER JOIN task
+                            ON target_task_order.before_task_id = task.task_id`
+    const [rows, fields] = await client.execute(queryString)
+    let tasks = rows.map((row)=>{
+        return {
+            task_id: row.task_id,
+            title: row.title,
+            required_days: row.required_days,
+            deadline: row.deadline
+        }
+    })
+    return tasks
+}
+
 
 module.exports = {
     save: save,
@@ -82,4 +100,5 @@ module.exports = {
     remove: remove,
     find: find,
     findAll:findAll,
+    findBeforeTasks: findBeforeTasks
 }
