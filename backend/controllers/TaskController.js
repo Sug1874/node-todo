@@ -1,10 +1,11 @@
 const Task = require("../models/Task")
+const TaskRepository = require("../repositories/TaskRepository")
 
 const getTaskList = async(req, res) =>{
-    const userName = req.session.user_name
+    const user_name = req.session.user_name
     const pageNum = req.params.pageNum
     try{
-        const taskList = await Task.getTaskList(userName, pageNum)
+        const taskList = await Task.getTaskList(user_name, pageNum)
         if(taskList.length > 0){
             res.status(200).send(taskList)
         }else{
@@ -16,13 +17,13 @@ const getTaskList = async(req, res) =>{
 }
 
 const getTask = async(req, res) =>{
-    const userName = req.session.user_name
-    const taskId = req.params.taskId
+    const user_name = req.session.user_name
+    const task_id = req.params.task_id
 
     try{
-        const task = await Task.getTask(userName, taskId)
+        const task = await Task.getTask(user_name, task_id)
         if(task){
-            const beforeTasks = await Task.getBeforeTasks(taskId)
+            const beforeTasks = await Task.getBeforeTasks(task_id)
             res.status(200).send({task:task, before_tasks: beforeTasks})
         }else{
             res.status(400).end()
@@ -33,11 +34,11 @@ const getTask = async(req, res) =>{
 }
 
 const createTask = async(req, res) =>{
-    const userName = req.session.user_name
+    const user_name = req.session.user_name
     const task = req.body.task
-    task.user_name = userName
+    task.user_name = user_name
     // task_idのリスト
-    const before_tasks = req.body.before_tasks
+    const beforeTasks = req.body.before_tasks
 
     try{
         await Task.saveTask(task)
@@ -48,14 +49,13 @@ const createTask = async(req, res) =>{
 }
 
 const updateTask = async(req, res) => {
-    const userName = req.session.user_name
+    const user_name = req.session.user_name
     const task = req.body.task
-    const taskId = req.params.taskId
-    task.task_id = taskId
-    task.user_name = userName
-
+    const task_id = req.params.task_id
+    task.task_id = task_id
+    task.user_name = user_name
     // task_idのリスト
-    const before_tasks = req.body.before_tasks
+    const beforeTasks = req.body.before_tasks
 
     try{
         await Task.saveTask(task)
@@ -66,11 +66,11 @@ const updateTask = async(req, res) => {
 }
 
 const deleteTask = async(req, res) =>{
-    const userName = req.session.user_name
-    const taskId = req.params.taskId
+    const user_name = req.session.user_name
+    const task_id = req.params.task_id
 
     try{
-        const result = await Task.deleteTask(userName, taskId)
+        const result = await Task.deleteTask(user_name, task_id)
         if(result){
             res.status(200).end()
         }else{
@@ -82,11 +82,11 @@ const deleteTask = async(req, res) =>{
 }
 
 const modifyTasks = async(req, res) => {
-    const userName = req.session.user_name
-    const taskId = req.body.taskId
+    const user_name = req.session.user_name
+    const task_id = req.body.task_id
 
     try{
-        await Task.modifyTask(taskId)
+        await Task.modifyTask(task_id)
         res.status(200).end()
     }catch(e){
         res.status(500).send(e.message)
@@ -99,5 +99,5 @@ module.exports = {
     createTask: createTask,
     updateTask: updateTask,
     deleteTask: deleteTask,
-    modifyTasks: modifyTasks
+    modifyTasks: modifyTasks,
 }

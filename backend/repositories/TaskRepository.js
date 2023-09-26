@@ -12,17 +12,17 @@ const createConnection = async() => {
     })
 }
 
-const find = async(taskId) => {
+const find = async(task_id) => {
     var client = await createConnection()
     const [rows, fields] = await client.execute(
         `SELECT * FROM task\
-        WHERE task_id = ${taskId}`
+        WHERE task_id = ${task_id}`
     )
     await client.end()
     if(rows.length < 1) return null
 
     return {
-        task_id: taskId,
+        task_id: task_id,
         user_name: rows[0].user_name,
         title: rows[0].title,
         description: rows[0].description,
@@ -31,11 +31,11 @@ const find = async(taskId) => {
     }
 }
 
-const findAll= async(userName) => {
+const findAll= async(user_name) => {
     var client = await createConnection()
     const [rows, fields] = await client.execute(
         `SELECT * FROM task\
-        WHERE user_name = '${userName}'`
+        WHERE user_name = '${user_name}'`
     )
     await client.end()
     let tasks = rows.map((row)=>{
@@ -67,20 +67,38 @@ const update = async(task) => {
     return result
 }
 
-const remove = async(taskId) => {
+const remove = async(task_id) => {
     var client = await createConnection()
     let queryString;
-    queryString = `DELETE FROM task WHERE task_id = ${taskId}`
+    queryString = `DELETE FROM task WHERE task_id = ${task_id}`
     const [result, fields] = await client.execute(queryString)
     await client.end()
 }
 
-const findBeforeTasks = async(taskId) => {
+const findBeforeTasks = async(task_id) => {
     const client = await createConnection()
     const queryString = `SELECT * FROM \
-                            (SELECT * FROM task_order WHERE after_task_id = ${taskId}) AS target_task_order \
+                            (SELECT * FROM task_order WHERE after_task_id = ${task_id}) AS target_task_order \
                             INNER JOIN task
                             ON target_task_order.before_task_id = task.task_id`
+    const [rows, fields] = await client.execute(queryString)
+    let tasks = rows.map((row)=>{
+        return {
+            task_id: row.task_id,
+            title: row.title,
+            required_days: row.required_days,
+            deadline: row.deadline
+        }
+    })
+    return tasks
+}
+
+const findAfterTasks = async(task_id) => {
+    const client = await createConnection()
+    const queryString = `SELECT * FROM \
+                            (SELECT * FROM task_order WHERE before_task_id = ${task_id}) AS target_task_order \
+                            INNER JOIN task
+                            ON target_task_order.after_task_id = task.task_id`
     const [rows, fields] = await client.execute(queryString)
     let tasks = rows.map((row)=>{
         return {
@@ -100,5 +118,6 @@ module.exports = {
     remove: remove,
     find: find,
     findAll:findAll,
-    findBeforeTasks: findBeforeTasks
+    findBeforeTasks: findBeforeTasks,
+    findAfterTasks: findAfterTasks
 }

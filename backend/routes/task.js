@@ -16,16 +16,16 @@ router.use((req,res,next)=>{
 router.get("/list/:pageNum", TaskController.getTaskList)
 
 // get task
-router.get("/:taskId", TaskController.getTask)
+router.get("/:task_id", TaskController.getTask)
 
 // create new task
 router.post("/", TaskController.createTask)
 
 // update task
-router.post("/:taskId", TaskController.updateTask)
+router.post("/:task_id", TaskController.updateTask)
 
 // delete task
-router.delete("/:taskId", TaskController.deleteTask)
+router.delete("/:task_id", TaskController.deleteTask)
 
 // modify tasks deadline
 router.post("/:modify", TaskController.modifyTasks)

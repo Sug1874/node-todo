@@ -11,10 +11,10 @@ const createConnection = async() => {
     })
 }
 
-const save = async(userName, password) => {
+const save = async(user_name, password) => {
     const client = await createConnection()
     const [result, fields] = await client.query(
-        `INSERT INTO user VALUES ('${userName}', '${password}')`
+        `INSERT INTO user VALUES ('${user_name}', '${password}')`
     )
     await client.end()
 }
@@ -28,10 +28,10 @@ const find = async(name) => {
     if(rows.length < 1){
         return null
     }
-    var userName = rows[0].user_name
+    var user_name = rows[0].user_name
     var password = rows[0].password
     return {
-        user_name: userName,
+        user_name: user_name,
         password: password
     }
 }

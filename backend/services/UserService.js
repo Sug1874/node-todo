@@ -1,7 +1,7 @@
 const UserRepository = require("../repositories/UserRepository")
 
-const exist = async(userName) => {
-    const user = await UserRepository.find(userName)
+const exist = async(user_name) => {
+    const user = await UserRepository.find(user_name)
     if(user){
         return true
     }else{

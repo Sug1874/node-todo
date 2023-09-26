@@ -1,17 +1,17 @@
 const TaskRepository = require("../repositories/TaskRepository")
 
-const getTaskList = async(userName, pageNum) => {
+const getTaskList = async(user_name, pageNum) => {
     const taskNumInPage = 10
-    const tasks = await TaskRepository.findAll(userName)
+    const tasks = await TaskRepository.findAll(user_name)
     if(pageNum < 0){
         return []
     }
     return tasks.slice(taskNumInPage*pageNum, taskNumInPage*(pageNum+1))
 }
 
-const getTask = async(userName, taskId) => {
-    const task = await TaskRepository.find(taskId)
-    if(userName != task.user_name){
+const getTask = async(user_name, task_id) => {
+    const task = await TaskRepository.find(task_id)
+    if(user_name != task.user_name){
         return null
     }
     return task
@@ -25,25 +25,25 @@ const saveTask = async(task) => {
     }
 }
 
-const deleteTask = async(userName, taskId) => {
-    const task = await TaskRepository.find(taskId)
-    if(!task || task.user_name != userName){
+const deleteTask = async(user_name, task_id) => {
+    const task = await TaskRepository.find(task_id)
+    if(!task || task.user_name != user_name){
         return false
     }
-    await TaskRepository.remove(taskId)
+    await TaskRepository.remove(task_id)
     return true
 }
 
-const modifyTask = async(taskId) => {
+const modifyTask = async(task_id) => {
     
 }
 
-const getBeforeTasks = async(taskId) => {
-    const tasks = await TaskRepository.findBeforeTasks(taskId)
+const getBeforeTasks = async(task_id) => {
+    const tasks = await TaskRepository.findBeforeTasks(task_id)
     return tasks
 }
 
-const saveBeforeTasks = async(taskId, beforeTasks) => {
+const saveBeforeTasks = async(task_id, beforeTasks) => {
 
 }
 
