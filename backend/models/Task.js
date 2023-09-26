@@ -17,12 +17,12 @@ const getTask = async(user_name, task_id) => {
     return task
 }
 
-const saveTask = async(task) => {
-    if(task.task_id){ // update
-        await TaskRepository.update(task)
-    }else{ // create
-        await TaskRepository.save(task)
-    }
+const saveTask = async(task, before_tasks) => {
+    await TaskRepository.save(task, before_tasks)
+}
+
+const updateTask = async(task, added_before_tasks, deleted_before_tasks) => {
+    await TaskRepository.update(task, added_before_tasks, deleted_before_tasks)
 }
 
 const deleteTask = async(user_name, task_id) => {
@@ -32,10 +32,6 @@ const deleteTask = async(user_name, task_id) => {
     }
     await TaskRepository.remove(task_id)
     return true
-}
-
-const modifyTask = async(task_id) => {
-    
 }
 
 const getBeforeTasks = async(task_id) => {
@@ -51,8 +47,8 @@ module.exports = {
     getTaskList: getTaskList,
     getTask: getTask,
     saveTask: saveTask,
+    updateTask: updateTask,
     deleteTask: deleteTask,
-    modifyTask: modifyTask,
     getBeforeTasks: getBeforeTasks,
     saveBeforeTasks: saveBeforeTasks
 }

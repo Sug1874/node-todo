@@ -27,7 +27,4 @@ router.post("/:task_id", TaskController.updateTask)
 // delete task
 router.delete("/:task_id", TaskController.deleteTask)
 
-// modify tasks deadline
-router.post("/:modify", TaskController.modifyTasks)
-
 module.exports = router

@@ -1,5 +1,6 @@
 const Task = require("../models/Task")
 const TaskRepository = require("../repositories/TaskRepository")
+const TaskService = require("../services/TaskService")
 
 const getTaskList = async(req, res) =>{
     const user_name = req.session.user_name
@@ -41,7 +42,7 @@ const createTask = async(req, res) =>{
     const beforeTasks = req.body.before_tasks
 
     try{
-        await Task.saveTask(task)
+        await Task.saveTask(task, beforeTasks)
         res.status(200).end()
     }catch(e){
         res.status(500).send(e.message)
@@ -55,11 +56,22 @@ const updateTask = async(req, res) => {
     task.task_id = task_id
     task.user_name = user_name
     // task_idのリスト
-    const beforeTasks = req.body.before_tasks
+    const deleted_before_tasks = req.body.deleted_before_tasks
+    const added_before_tasks = req.body.added_before_tasks
 
     try{
-        await Task.saveTask(task)
-        res.status(200).end()
+        const circulateTaskList = beforeTasks.map(async(beforeTask) => {
+            const isCirculate = await TaskService.checkTaskCirculation(beforeTask, task)
+            if(isCirculate){ return beforeTask.task_id }
+            return null
+        }).filter(e => e)
+
+        if(circulateTaskList > 0){
+            res.status(400).send({circulate_task: circulateTaskList})
+        }else{
+            const result = await Task.updateTask(task, added_before_tasks, deleted_before_tasks)
+            res.status(200).end()
+        }
     }catch(e){
         res.status(500).send(e.message)
     }
@@ -81,23 +93,10 @@ const deleteTask = async(req, res) =>{
     }
 }
 
-const modifyTasks = async(req, res) => {
-    const user_name = req.session.user_name
-    const task_id = req.body.task_id
-
-    try{
-        await Task.modifyTask(task_id)
-        res.status(200).end()
-    }catch(e){
-        res.status(500).send(e.message)
-    }
-}
-
 module.exports = {
     getTaskList: getTaskList,
     getTask: getTask,
     createTask: createTask,
     updateTask: updateTask,
     deleteTask: deleteTask,
-    modifyTasks: modifyTasks,
 }
