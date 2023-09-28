@@ -54,14 +54,12 @@ const save = async(task, before_tasks) => {
     var connection = await createConnection()
     await connection.beginTransaction()
     try{
-        let queryString = `INSERT INTO task (user_name, title, description, required_days, deadline) \
-        VALUES ('${task.user_name}', '${task.title}', '${task.description}', ${task.required_days}, '${task.deadline}')`
-        [result, fields] = await connection.query(queryString)
-
-        let task_id = result['insertId']
-        before_tasks.map(async (before_task) => {
-            await connection.query(`INSERT INTO task_order (after_task_id, before_task_id) VALUES (${task_id}, ${before_task.task_id})`)
-        })
+        [result, fields] = await connection.query(`INSERT INTO task (user_name, title, description, required_days, deadline) VALUES ('${task.user_name}', '${task.title}', '${task.description}', ${task.required_days}, '${task.deadline}')`)
+        let task_id = result.insertId
+        let resultList = await Promise.all(before_tasks.map(async(before_task) => {
+            let orderRes = await connection.query(`INSERT INTO task_order (after_task_id, before_task_id) VALUES (${task_id}, ${before_task})`)
+            return orderRes
+        }))
         await connection.commit()
     }catch(error){
         await connection.rollback()
@@ -81,12 +79,12 @@ const update = async(task, added_before_tasks, deleted_before_tasks) => {
         WHERE task_id = ${task.task_id} and user_name='${task.user_name}'`
         [result, fields] = await connection.query(queryString)
 
-        deleted_before_tasks.map(async(before_task)=>{
+        await Promise.all(deleted_before_tasks.map(async(before_task)=>{
             await connection.query(`DELETE FROM task_order WHERE after_task_id=${task.task_id}, before_task_id=${before_task.task_id}`)
-        })
-        added_before_tasks.map(async (before_task) => {
+        }))
+        await Promise.all(added_before_tasks.map(async (before_task) => {
             await connection.query(`INSERT INTO task_order (after_task_id, before_task_id) VALUES (${task_id}, ${before_task.task_id})`)
-        })
+        }))
         await connection.commit()
     }catch(error){
         await connection.rollback()

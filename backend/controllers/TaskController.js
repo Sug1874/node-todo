@@ -36,13 +36,17 @@ const getTask = async(req, res) =>{
 
 const createTask = async(req, res) =>{
     const user_name = req.session.user_name
-    const task = req.body.task
+    let task = req.body.task
     task.user_name = user_name
     // task_idのリスト
-    const beforeTasks = req.body.before_tasks
+    const before_tasks = req.body.before_tasks
 
     try{
-        await Task.saveTask(task, beforeTasks)
+        const result = await Task.saveTask(task, before_tasks)
+        task.task_id = result['insertId']
+        if(before_tasks.length > 0){
+            await TaskService.modifyTask(task)
+        }
         res.status(200).end()
     }catch(e){
         res.status(500).send(e.message)
@@ -51,7 +55,7 @@ const createTask = async(req, res) =>{
 
 const updateTask = async(req, res) => {
     const user_name = req.session.user_name
-    const task = req.body.task
+    let task = req.body.task
     const task_id = req.params.task_id
     task.task_id = task_id
     task.user_name = user_name
@@ -60,7 +64,7 @@ const updateTask = async(req, res) => {
     const added_before_tasks = req.body.added_before_tasks
 
     try{
-        const circulateTaskList = beforeTasks.map(async(beforeTask) => {
+        const circulateTaskList = added_before_tasks.map(async(beforeTask) => {
             const isCirculate = await TaskService.checkTaskCirculation(beforeTask, task)
             if(isCirculate){ return beforeTask.task_id }
             return null
@@ -70,6 +74,7 @@ const updateTask = async(req, res) => {
             res.status(400).send({circulate_task: circulateTaskList})
         }else{
             const result = await Task.updateTask(task, added_before_tasks, deleted_before_tasks)
+            await TaskService.modifyTask(task)
             res.status(200).end()
         }
     }catch(e){

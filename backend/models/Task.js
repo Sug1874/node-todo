@@ -18,11 +18,12 @@ const getTask = async(user_name, task_id) => {
 }
 
 const saveTask = async(task, before_tasks) => {
-    await TaskRepository.save(task, before_tasks)
+    const result = await TaskRepository.save(task, before_tasks)
+    return result
 }
 
 const updateTask = async(task, added_before_tasks, deleted_before_tasks) => {
-    await TaskRepository.update(task, added_before_tasks, deleted_before_tasks)
+    return await TaskRepository.update(task, added_before_tasks, deleted_before_tasks)
 }
 
 const deleteTask = async(user_name, task_id) => {
