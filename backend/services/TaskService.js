@@ -24,7 +24,7 @@ const modifyTask = async(targetTask) => {
     const beforeTasks = await TaskRepository.findBeforeTasks(targetTask.task_id)
     if(beforeTasks.length>0){
         let newDeadlineDictList = await Promise.all(beforeTasks.map(async(beforeTask)=>{
-            let result = await calcNewDeadline(beforeTask, targetTask, true)
+            let result = await calcNewDeadline(beforeTask, targetTask)
             return result
         }))
         // 締め切りを格納しているobjectの統合
@@ -45,7 +45,7 @@ const modifyTask = async(targetTask) => {
 
 // 修正後のdeadlineの計算
 // プロパティ名がtask_id, 値が新しい締め切りのobjectを返す
-const calcNewDeadline = async(beforeTask, afterTask, isRoot) => {
+const calcNewDeadline = async(beforeTask, afterTask) => {
     const diffDeadline = calcDiffDays(beforeTask, afterTask)
     let newDeadline;
     if(diffDeadline < afterTask.required_days){
@@ -56,10 +56,10 @@ const calcNewDeadline = async(beforeTask, afterTask, isRoot) => {
         newDeadline = null
     }
 
-    if(newDeadline || isRoot){
+    if(newDeadline){
         const nextBeforeTasks = await TaskRepository.findBeforeTasks(beforeTask.task_id)
         let newDeadlineDictList = await Promise.all(nextBeforeTasks.map(async(nextBeforeTask)=>{
-            let result = await calcNewDeadline(nextBeforeTask, beforeTask, false)
+            let result = await calcNewDeadline(nextBeforeTask, beforeTask)
             return result
         }))
         // 締め切りを格納しているobjectの統合
