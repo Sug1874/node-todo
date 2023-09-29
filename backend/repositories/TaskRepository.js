@@ -100,7 +100,9 @@ const remove = async(task_id) => {
     await connection.beginTransaction()
     try{
         let queryString = `DELETE FROM task WHERE task_id = ${task_id}`
-        const [result, fields] = await connection.execute(queryString)
+        await connection.execute(queryString)
+        queryString = `DELETE FROM task_order WHERE after_task_id=${task_id} OR before_task_id=${task_id}`
+        await connection.execute(queryString)
         connection.commit()
     }catch(error){
         await connection.rollback()
