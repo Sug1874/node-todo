@@ -92,20 +92,23 @@ const mergeDeadlineDict = (dict1, dict2) => {
 }
 
 // タスク順序に循環があったらtrue
-const checkTaskCirculation = async(beforeTask, afterTask) => {
-    const beforeTasks = await TaskRepository.findBeforeTasks(afterTask.task_id)
+const checkTaskCirculation = async(beforeTaskId, afterTaskId) => {
+    const nextBeforeTasks = await TaskRepository.findBeforeTasks(beforeTaskId)
     let check = false
-    for (let task in beforeTasks){
-        if(task.task_id == beforeTask.task_id){
-            check = true
-            break
+
+    check = nextBeforeTasks.map((nextBeforeTask)=>{
+        if(nextBeforeTask.task_id == afterTaskId){
+            return true
         }
-    }
+        return false
+    }).some(e=>e)
+
     if(!check){
-        for (let task in beforeTasks){
-            check = checkTaskCirculation(beforeTask, task)
-            if(check){ break }
-        }
+        const checkList = await Promise.all(nextBeforeTasks.map(async(nextBeforeTask)=>{
+            let result = await checkTaskCirculation(nextBeforeTask.task_id, afterTaskId)
+            return result
+        }))
+        check = checkList.some(e=>e)
     }
     return check
 }

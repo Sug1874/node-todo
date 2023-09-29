@@ -62,14 +62,13 @@ const updateTask = async(req, res) => {
     // task_idのリスト
     const deleted_before_tasks = req.body.deleted_before_tasks
     const added_before_tasks = req.body.added_before_tasks
-
     try{
-        const circulateTaskList = added_before_tasks.map(async(beforeTask) => {
-            const isCirculate = await TaskService.checkTaskCirculation(beforeTask, task)
-            if(isCirculate){ return beforeTask.task_id }
+        let circulateTaskList = await Promise.all(added_before_tasks.map(async(beforeTaskId) => {
+            const isCirculate = await TaskService.checkTaskCirculation(beforeTaskId, task.task_id)
+            if(isCirculate){ return beforeTaskId }
             return null
-        }).filter(e => e)
-
+        }))
+        circulateTaskList =  circulateTaskList.filter(e => e)
         if(circulateTaskList > 0){
             res.status(400).send({circulate_task: circulateTaskList})
         }else{
