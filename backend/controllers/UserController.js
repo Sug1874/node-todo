@@ -12,7 +12,7 @@ const login = async(req, res) => {
             res.status(401).send("user name or password is wrong")
         }
     }catch(e){
-        res.status(500).send(e.message)
+        res.status(500).send()
     }
 }
 

@@ -8,6 +8,7 @@ const router = require("express").Router()
 router.use((req,res,next)=>{
     if (!req.session.user_name || !UserService.exist(req.session.user_name)) {
         res.status(401).send("user is not authenticated")
+        return
     }
     next()
 })

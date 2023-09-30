@@ -17,31 +17,38 @@ type TaskInfo = {
     deadline: string
 }
 
-const registerUser = async(body:UserRequestBody) => {
-    const result = await fetch(USER_REGISTER_URL)
-    const resultJson = result.json()
+export const registerUser = async(body:UserRequestBody):Promise<number> => {
+    const response = await fetch(USER_REGISTER_URL, {
+        method: "POST",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+    })
+    const responseStatus = response.status
+    return responseStatus
 }
 
-const loginUser = async(body: UserRequestBody) => {
-
+export const loginUser = async(body: UserRequestBody):Promise<number> => {
+    const response = await fetch(LOGIN_URL, {
+        method: "POST",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+    })
+    const responseStatus = response.status
+    return responseStatus
 }
 
-const getTaskList = async(pageNum: number) => {}
+export const getTaskList = async(pageNum: number) => {}
 
-const getTaskDetail = async(task_id: number) => {}
+export const getTaskDetail = async(task_id: number) => {}
 
-const createNewTask = async(task: TaskInfo) => {}
+export const createNewTask = async(task: TaskInfo) => {}
 
-const updateTask = async(task: TaskInfo) => {}
+export const updateTask = async(task: TaskInfo) => {}
 
-const deleteTask = async(task_id: number) => {}
-
-export default {
-    registerUser: registerUser,
-    loginUser: loginUser,
-    getTaskList: getTaskList,
-    getTaskDetail: getTaskDetail,
-    createNewTask: createNewTask,
-    updateTask: updateTask,
-    deleteTask: deleteTask
-}
+export const deleteTask = async(task_id: number) => {}
