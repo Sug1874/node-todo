@@ -6,7 +6,7 @@ const getTaskList = async(user_name, pageNum) => {
     if(pageNum < 0){
         return []
     }
-    return tasks.slice(taskNumInPage*pageNum, taskNumInPage*(pageNum+1))
+    return [tasks.length, tasks.slice(taskNumInPage*pageNum, taskNumInPage*(pageNum+1))]
 }
 
 const getTask = async(user_name, task_id) => {
