@@ -3,7 +3,7 @@ const TaskRepository = require("../repositories/TaskRepository")
 const TaskService = require("../services/TaskService")
 
 const getTaskList = async(req, res) =>{
-    const user_name = req.session.user_name
+    const user_name = req.body.user_name
     const pageNum = req.params.pageNum
     try{
         const [taskNum, taskList] = await Task.getTaskList(user_name, pageNum)
@@ -18,7 +18,7 @@ const getTaskList = async(req, res) =>{
 }
 
 const getTask = async(req, res) =>{
-    const user_name = req.session.user_name
+    const user_name = req.body.user_name
     const task_id = req.params.task_id
 
     try{
@@ -35,7 +35,7 @@ const getTask = async(req, res) =>{
 }
 
 const createTask = async(req, res) =>{
-    const user_name = req.session.user_name
+    const user_name = req.body.user_name
     let task = req.body.task
     task.user_name = user_name
     // task_idのリスト
@@ -54,7 +54,7 @@ const createTask = async(req, res) =>{
 }
 
 const updateTask = async(req, res) => {
-    const user_name = req.session.user_name
+    const user_name = req.body.user_name
     let task = req.body.task
     const task_id = req.params.task_id
     task.task_id = task_id
@@ -82,7 +82,7 @@ const updateTask = async(req, res) => {
 }
 
 const deleteTask = async(req, res) =>{
-    const user_name = req.session.user_name
+    const user_name = req.body.user_name
     const task_id = req.params.task_id
 
     try{
