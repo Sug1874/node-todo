@@ -3,7 +3,7 @@ const TaskRepository = require("../repositories/TaskRepository")
 const TaskService = require("../services/TaskService")
 
 const getTaskList = async(req, res) =>{
-    const user_name = req.session.user_name
+    const user_name = req.body.user_name
     const pageNum = req.params.pageNum
     try{
         const [taskNum, taskList] = await Task.getTaskList(user_name, pageNum)
@@ -13,12 +13,28 @@ const getTaskList = async(req, res) =>{
             res.status(400).end()
         }
     }catch(e){
+        console.log(e)
+        res.status(500).send(e.message)
+    }
+}
+
+const getAllTaskList = async(req, res) =>{
+    const user_name = req.body.user_name
+    try{
+        const taskList = await Task.getAllTaskList(user_name)
+        if(taskList.length > 0){
+            res.status(200).send({tasks: taskList})
+        }else{
+            res.status(400).end()
+        }
+    }catch(e){
+        console.log(e)
         res.status(500).send(e.message)
     }
 }
 
 const getTask = async(req, res) =>{
-    const user_name = req.session.user_name
+    const user_name = req.body.user_name
     const task_id = req.params.task_id
 
     try{
@@ -30,17 +46,19 @@ const getTask = async(req, res) =>{
             res.status(400).end()
         }
     }catch(e){
+        console.log(e)
         res.status(500).send(e.message)
     }
 }
 
 const createTask = async(req, res) =>{
-    const user_name = req.session.user_name
+    const user_name = req.body.user_name
     let task = req.body.task
     task.user_name = user_name
     // task_idのリスト
     const before_tasks = req.body.before_tasks
 
+    console.log("create task")
     try{
         const result = await Task.saveTask(task, before_tasks)
         task.task_id = result['insertId']
@@ -49,12 +67,13 @@ const createTask = async(req, res) =>{
         }
         res.status(200).end()
     }catch(e){
+        console.log(e)
         res.status(500).send(e.message)
     }
 }
 
 const updateTask = async(req, res) => {
-    const user_name = req.session.user_name
+    const user_name = req.body.user_name
     let task = req.body.task
     const task_id = req.params.task_id
     task.task_id = task_id
@@ -77,12 +96,13 @@ const updateTask = async(req, res) => {
             res.status(200).end()
         }
     }catch(e){
+        console.log(e)
         res.status(500).send(e.message)
     }
 }
 
 const deleteTask = async(req, res) =>{
-    const user_name = req.session.user_name
+    const user_name = req.body.user_name
     const task_id = req.params.task_id
 
     try{
@@ -93,12 +113,14 @@ const deleteTask = async(req, res) =>{
             res.status(400).end()
         }
     }catch(e){
+        console.log(e)
         res.status(500).send(e.message)
     }
 }
 
 module.exports = {
     getTaskList: getTaskList,
+    getAllTaskList: getAllTaskList,
     getTask: getTask,
     createTask: createTask,
     updateTask: updateTask,

@@ -1,4 +1,6 @@
 const User = require("../models/User")
+const jwt = require("jsonwebtoken")
+const conf = require("config")
 
 const login = async(req, res) => {
     const user_name = req.body.user_name
@@ -6,13 +8,17 @@ const login = async(req, res) => {
     try{
         const result = await User.authenticate(user_name, password)
         if(result){
-            req.session.user_name = user_name
-            res.status(200).send("OK")
+            const payload = {
+                user_name: user_name
+            }
+            const secret_key = conf.jwtSecretKey
+            const token = jwt.sign(payload, secret_key, {expiresIn: "23h"})
+            res.status(200).send({token: token})
         }else{
             res.status(401).send("user name or password is wrong")
         }
     }catch(e){
-        res.status(500).send()
+        res.status(500).send(e.message)
     }
 }
 

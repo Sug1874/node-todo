@@ -3,5 +3,6 @@
     "dbPort":"3306",
     "dbUser":"root",
     "dbPassword" : "mysql",
-    "dbName": "node_todo"
+    "dbName": "node_todo",
+    "jwtSecretKey": "node-todo"
 }

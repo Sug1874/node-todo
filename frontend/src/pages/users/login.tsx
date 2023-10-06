@@ -25,7 +25,7 @@ const Login = () => {
                 alert("ログインに失敗しました。時間をおいてやり直してください。")
             }
         }catch(error){
-            alert("ログインに失敗しました")
+            alert("ログインに失敗しました"+error)
         }
     }
 
