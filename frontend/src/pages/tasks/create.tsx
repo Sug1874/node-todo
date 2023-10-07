@@ -1,8 +1,8 @@
-import { useContext, useEffect, useState } from "react"
+import { useCallback, useContext, useEffect, useState } from "react"
 import { TaskDetail, TaskOutline, createNewTask, getAllTaskList } from "../../api"
 import TaskList from "./parts/taskList"
 import { useNavigate } from "react-router-dom"
-import Modal from "./parts/modal"
+import useModal from "../../hooks/useModal"
 
 const CreatePage = () => {
     const [taskDetail, setTaskDetail] = useState<TaskDetail>({
@@ -124,16 +124,16 @@ const CreatePage = () => {
             })
     }
 
-    const addBeforeTask = (task_id: number) => {
+    const addBeforeTask = useCallback((task_id: number) => {
         setBeforeTaskIds(prev => {
             if(!prev.includes(task_id)){
                 return [...prev, task_id]
             }
             return [...prev]
         })
-    }
+    },[])
 
-    const removeBeforeTask = (task_id: number) => {
+    const removeBeforeTask = useCallback((task_id: number) => {
         setBeforeTaskIds(prev => {
             let newList = [...prev]
             let index = newList.indexOf(task_id)
@@ -142,11 +142,7 @@ const CreatePage = () => {
             }
             return newList
         })
-    }
-
-    const showTaskListModal = () => {
-
-    }
+    },[])
 
     const getTaskOutlineInBeforeTasks = (taskIds: number[]):TaskOutline[] => {
         let beforeTasks:TaskOutline[] = []
@@ -160,13 +156,15 @@ const CreatePage = () => {
         return notBeforeTasks
     }
 
+    const {Modal, openModal} = useModal()
+
     return (
         <>
             <input type="text" name="title" placeholder="タイトル" onChange={titleChangeHandler}/>
             <textarea name="description" rows={10} cols={25} placeholder="タスクの内容" onChange={descriptionChangeHandler} />
             <input type="" name="required_days" placeholder="作業日数" onChange={requiredDaysChangeHandler} />
             <input type="date" name="deadline" placeholder="" onChange={deadlineChangeHandler} />
-            <TaskList tasks={getTaskOutlineInBeforeTasks(beforeTaskIds)} addButtonClickHandler={showTaskListModal} itemClickHandler={removeBeforeTask} listActionText="remove"/>
+            <TaskList tasks={getTaskOutlineInBeforeTasks(beforeTaskIds)} addButtonClickHandler={openModal} itemClickHandler={removeBeforeTask} listActionText="remove"/>
             <Modal><TaskList tasks={getTaskOutlineNotInBeforeTasks(beforeTaskIds)} addButtonClickHandler={null} itemClickHandler={addBeforeTask} listActionText="add"/></Modal>
             <div>
                 <button onClick={saveButtonClicked}>タスクを保存</button>

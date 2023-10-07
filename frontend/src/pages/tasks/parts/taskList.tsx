@@ -1,15 +1,15 @@
-import { useState } from "react"
+import { memo, useState } from "react"
 import { TaskOutline } from "../../../api"
 import ListItem from "./listItem"
 
-const TaskList = (
-    props: {
-        tasks: Array<TaskOutline>, 
-        addButtonClickHandler: (()=>void)|null,
-        itemClickHandler: (task_id:number)=>void,
-        listActionText: string
-    }
-) => {
+type TaskListProps = {
+    tasks: Array<TaskOutline>, 
+    addButtonClickHandler: (()=>void)|null,
+    itemClickHandler: (task_id:number)=>void,
+    listActionText: string
+}
+
+const TaskList = memo<TaskListProps>((props) => {
     return (
         <table>
             <thead>
@@ -20,11 +20,11 @@ const TaskList = (
             </thead>
             <tbody>
                 {props.tasks.map((item) => <ListItem task={item} clickHandler={props.itemClickHandler} actionText={props.listActionText}/>)}
-                {props.addButtonClickHandler && (<tr><td colSpan={3}>+</td></tr>)}
+                {props.addButtonClickHandler && (<tr onClick={props.addButtonClickHandler}><td colSpan={3}>+</td></tr>)}
             </tbody>
 
         </table>
     )
-}
+})
 
 export default TaskList
