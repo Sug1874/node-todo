@@ -30,7 +30,7 @@ const Login = () => {
     }
 
     return (
-        <div>
+        <div className="login_content">
             <h1>ログイン</h1>
             <form onSubmit={handleSubmit}>
                 <input type="text" id="user_id" name="user_id" placeholder="ユーザー名" required 

@@ -1,0 +1,151 @@
+html{
+    width: 100%;
+    height: 100%;
+}
+
+body{
+    width: 100%;
+    height: 100%;
+}
+
+#root{
+    margin: 5% auto;
+    width: 80%;
+    min-width: 900px;
+}
+
+button{
+    font-size: 1em;
+}
+
+input, textarea {
+    font-size: large;
+}
+
+table{
+    margin:10px auto;
+    border-collapse: collapse;
+    border-bottom: none ;
+}
+
+tr, thead{
+    padding: 5px 10px;
+    border-bottom: solid 2px #000 ;
+    text-align: center;
+}
+
+tr.table_add_button{
+    border-bottom: none;
+}
+
+td, th{
+    padding: 1em 0.5em;
+    overflow: hidden;
+}
+
+title{
+    width: 12em;
+}
+
+.required_days{
+    width: 4em;
+}
+
+.deadline {
+    width: 12em;
+}
+
+.action {
+    width: 5em;
+}
+
+*{
+    width: fit-content;
+    margin: auto;
+}
+
+.login_content{
+    width: fit-content;
+    height: fit-content;
+    margin: auto;
+}
+
+.login_content *{
+    width: fit-content;
+    margin: 1em auto;
+    display: block;
+}
+
+.modal_container {
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, .5);
+}
+
+.modal{
+    position: absolute;
+    height: 500px;
+    width: 700px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.modal_close_button {
+    position: absolute;
+    top: -2em;
+    right: 0;
+}
+
+.modal_content {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    overflow: scroll;
+}
+
+.button_wrapper{
+    margin: 3em auto;
+}
+
+.button_wrapper * {
+    margin: 0 2em;
+}
+
+.detail_item{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-bottom: 3rem;
+}
+
+.detail_item span{
+    flex: 1;
+    text-align: center;
+}
+
+.detail_item * {
+    flex: 2;
+}
+
+.button {
+    border: solid 1px black;
+    border-radius: 5px;
+    color: black;
+    width: 8em;
+}
+
+.delete_button {
+    background-color: red;
+}
+
+.reset_button {
+    background-color: grey;
+}
+
+.save_button {
+    background-color: chartreuse;
+}

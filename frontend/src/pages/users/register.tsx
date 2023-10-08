@@ -40,7 +40,7 @@ const Register = () => {
     }
 
     return (
-        <div>
+        <div className="login_content">
             <h1>ユーザー登録</h1>
             <form onSubmit={handleSubmit}>
                 <input type="text" name="user_id" placeholder="ユーザー名" required 

@@ -15,9 +15,11 @@ const useModal = () => {
 
     const Modal = ({children}) => {
         return (show ? 
-            <div>
-                <button onClick={closeModal}>X</button>
-                {children}
+            <div className="modal_container">
+                <div className="modal">
+                    <button onClick={closeModal} className="modal_close_button">X</button>
+                    <div className="modal_content">{children}</div>
+                </div>
             </div> 
             : <></>)
     }

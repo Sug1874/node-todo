@@ -7,10 +7,10 @@ const ListItem = (props: {task: TaskOutline, clickHandler: (task_id:number)=>voi
     }
     return (
         <tr>
-            <td>{props.task.title}</td>
-            <td>{props.task.required_days}</td>
-            <td>{props.task.deadline}</td>
-            <td onClick={clickHandler}>{props.actionText}</td>
+            <td className="title">{props.task.title}</td>
+            <td className="required_days">{props.task.required_days}</td>
+            <td className="deadline">{props.task.deadline}</td>
+            <td className="action" onClick={clickHandler}><button>{props.actionText}</button></td>
         </tr>
     )
 }

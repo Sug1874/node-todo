@@ -68,13 +68,15 @@ const ListPage = () => {
     }, [pageNum, taskList])
 
     return (
-        <>
+        <div className="content_wrapper">
             <button onClick={()=>{navigation('/task/new')}}>create new task</button>
             <TaskList tasks={taskListToShow} addButtonClickHandler={ null } itemClickHandler={listItemClicked} listActionText="detail"/>
-            <button disabled={prevDisable} onClick={prevPage}>prev</button>
-            <span>{pageNum+1}</span>
-            <button disabled={nextDisable} onClick={nextPage}>next</button>
-        </>
+            <div className="button_wrapper">
+                <button disabled={prevDisable} onClick={prevPage}>prev</button>
+                <span>{pageNum+1}</span>
+                <button disabled={nextDisable} onClick={nextPage}>next</button>
+            </div>
+        </div>
     )
 }
 

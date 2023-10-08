@@ -231,19 +231,34 @@ const DetailPage = () => {
     const {Modal, openModal} = useModal()
 
     return (
-        <>
-            <input type="text" name="title" value={taskDetail?.title} onChange={titleChangeHandler}/>
-            <textarea name="description" rows={10} cols={25} value={taskDetail?.description} onChange={descriptionChangeHandler} />
-            <input type="" name="required_days" value={String(taskDetail?.required_days)} onChange={requiredDaysChangeHandler} />
-            <input type="date" name="deadline" value={taskDetail?.deadline} onChange={deadlineChangeHandler} />
-            <TaskList tasks={getTaskOutlineInBeforeTasks(beforeTaskIds)} addButtonClickHandler={openModal} itemClickHandler={removeBeforeTask} listActionText="remove"/>
-            <Modal><TaskList tasks={getTaskOutlineNotInBeforeTasks(beforeTaskIds)} addButtonClickHandler={null} itemClickHandler={addBeforeTask} listActionText="add"/></Modal>
-            <div>
-                <button onClick={deleteButtonClicked}>タスクを削除</button>
-                <button onClick={cancelButtonClicked}>変更をリセット</button>
-                <button onClick={saveButtonClicked}>変更を保存</button>
+        <div className="content_wrapper">
+            <div className="detail_item">
+                <span>タイトル</span>
+                <input type="text" name="title" value={taskDetail?.title} onChange={titleChangeHandler}/>
             </div>
-        </>
+            <div className="detail_item">
+                <span>詳細</span>
+                <textarea name="description" rows={10} cols={25} value={taskDetail?.description} onChange={descriptionChangeHandler} />
+            </div>
+            <div className="detail_item">
+                <span>作業日数</span>
+                <input type="" name="required_days" value={String(taskDetail?.required_days)} onChange={requiredDaysChangeHandler} />
+            </div>
+            <div className="detail_item">
+                <span>締め切り</span>
+                <input type="date" name="deadline" value={taskDetail?.deadline} onChange={deadlineChangeHandler} />
+            </div>
+            <div className="detail_item">
+                <span>前のタスク</span>
+                <TaskList tasks={getTaskOutlineInBeforeTasks(beforeTaskIds)} addButtonClickHandler={openModal} itemClickHandler={removeBeforeTask} listActionText="remove"/>
+                <Modal><TaskList tasks={getTaskOutlineNotInBeforeTasks(beforeTaskIds)} addButtonClickHandler={null} itemClickHandler={addBeforeTask} listActionText="add"/></Modal>
+            </div>
+            <div className="button_wrapper">
+                <button className="button delete_button" onClick={deleteButtonClicked}>タスクを削除</button>
+                <button className="button reset_button" onClick={cancelButtonClicked}>変更をリセット</button>
+                <button className="button save_button" onClick={saveButtonClicked}>変更を保存</button>
+            </div>
+        </div>
     )
 }
 
