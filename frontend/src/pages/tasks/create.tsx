@@ -160,13 +160,28 @@ const CreatePage = () => {
 
     return (
         <>
-            <input type="text" name="title" placeholder="タイトル" onChange={titleChangeHandler}/>
-            <textarea name="description" rows={10} cols={25} placeholder="タスクの内容" onChange={descriptionChangeHandler} />
-            <input type="" name="required_days" placeholder="作業日数" onChange={requiredDaysChangeHandler} />
-            <input type="date" name="deadline" placeholder="" onChange={deadlineChangeHandler} />
-            <TaskList tasks={getTaskOutlineInBeforeTasks(beforeTaskIds)} addButtonClickHandler={openModal} itemClickHandler={removeBeforeTask} listActionText="remove"/>
-            <Modal><TaskList tasks={getTaskOutlineNotInBeforeTasks(beforeTaskIds)} addButtonClickHandler={null} itemClickHandler={addBeforeTask} listActionText="add"/></Modal>
-            <div>
+            <div className="detail_item">
+                <span>タイトル</span>
+                <input type="text" name="title" placeholder="タイトル" onChange={titleChangeHandler}/>
+            </div>
+            <div className="detail_item">
+                <span>詳細</span>
+                <textarea name="description" rows={10} cols={25} placeholder="タスクの内容" onChange={descriptionChangeHandler} />
+            </div>
+            <div className="detail_item">
+                <span>作業日数</span>
+                <input type="" name="required_days" placeholder="作業日数" onChange={requiredDaysChangeHandler} />
+            </div>
+            <div className="detail_item">
+                <span>締め切り</span>
+                <input type="date" name="deadline" placeholder="" onChange={deadlineChangeHandler} />
+            </div>
+            <div className="detail_item">
+                <span>前のタスク</span>
+                <TaskList tasks={getTaskOutlineInBeforeTasks(beforeTaskIds)} addButtonClickHandler={openModal} itemClickHandler={removeBeforeTask} listActionText="remove"/>
+                <Modal><TaskList tasks={getTaskOutlineNotInBeforeTasks(beforeTaskIds)} addButtonClickHandler={null} itemClickHandler={addBeforeTask} listActionText="add"/></Modal>
+            </div>
+            <div className="button_wrapper">
                 <button onClick={saveButtonClicked}>タスクを保存</button>
             </div>
         </>

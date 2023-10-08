@@ -7,7 +7,8 @@ const getTaskList = async(req, res) =>{
     const pageNum = req.params.pageNum
     try{
         const [taskNum, taskList] = await Task.getTaskList(user_name, pageNum)
-        if(taskList.length > 0){
+        console.log(taskList)
+        if(taskList){
             res.status(200).send({task_num: taskNum, tasks: taskList})
         }else{
             res.status(400).end()
@@ -22,7 +23,7 @@ const getAllTaskList = async(req, res) =>{
     const user_name = req.body.user_name
     try{
         const taskList = await Task.getAllTaskList(user_name)
-        if(taskList.length > 0){
+        if(taskList){
             res.status(200).send({tasks: taskList})
         }else{
             res.status(400).end()
