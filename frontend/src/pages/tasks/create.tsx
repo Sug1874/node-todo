@@ -159,7 +159,8 @@ const CreatePage = () => {
     const {Modal, openModal} = useModal()
 
     return (
-        <>
+        <div className="content_wrapper">
+            <div className="top_button_wrapper"><a href="/"><button>タスク一覧へ</button></a></div>
             <div className="detail_item">
                 <span>タイトル</span>
                 <input type="text" name="title" placeholder="タイトル" onChange={titleChangeHandler}/>
@@ -184,7 +185,7 @@ const CreatePage = () => {
             <div className="button_wrapper">
                 <button onClick={saveButtonClicked}>タスクを保存</button>
             </div>
-        </>
+        </div>
     )
 }
 

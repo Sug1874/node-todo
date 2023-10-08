@@ -232,6 +232,7 @@ const DetailPage = () => {
 
     return (
         <div className="content_wrapper">
+            <div className="top_button_wrapper"><a href="/"><button>タスク一覧へ</button></a></div>
             <div className="detail_item">
                 <span>タイトル</span>
                 <input type="text" name="title" value={taskDetail?.title} onChange={titleChangeHandler}/>

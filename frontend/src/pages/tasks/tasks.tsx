@@ -69,7 +69,7 @@ const ListPage = () => {
 
     return (
         <div className="content_wrapper">
-            <button onClick={()=>{navigation('/task/new')}}>create new task</button>
+            <div className="top_button_wrapper"><a href="/task/new"><button>create new task</button></a></div>
             <TaskList tasks={taskListToShow} addButtonClickHandler={ null } itemClickHandler={listItemClicked} listActionText="detail"/>
             <div className="button_wrapper">
                 <button disabled={prevDisable} onClick={prevPage}>prev</button>
