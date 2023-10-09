@@ -9,9 +9,25 @@ body{
 }
 
 #root{
-    margin: 5% auto;
-    width: 80%;
+    margin: 0;
+    width: 100%;
     min-width: 900px;
+}
+
+.header{
+    width: 100%;
+    padding: 2em;
+    margin-bottom: 1em;
+    background-color:chartreuse;
+}
+
+.header a{
+    color: white;
+    text-decoration: none;
+}
+
+.header h1 {
+    margin: 0 0 0 2em;
 }
 
 .content_wrapper{
