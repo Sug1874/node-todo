@@ -64,7 +64,7 @@ const calcNewDeadline = async(beforeTask, afterTask) => {
         }))
         // 締め切りを格納しているobjectの統合
         // 最も早い締め切りが採用される
-        let newDeadlineDict = newDeadlineDictList.reduce((d1, d2) => mergeDeadlineDict(d1, d2))
+        let newDeadlineDict = (newDeadlineDictList.length > 0) ? newDeadlineDictList.reduce((d1, d2) => mergeDeadlineDict(d1, d2)) : {}
         newDeadlineDict[beforeTask.task_id] = newDeadline
         return newDeadlineDict
     }else{

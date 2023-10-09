@@ -6,6 +6,10 @@ const conf = require("config")
 const router = require("express").Router()
 
 router.use((req,res,next)=>{
+    if(!req.headers.authorization){
+        res.status(401).send("user is not authenticated")
+        return
+    }
     const token = req.headers.authorization.split(" ")[1]
     if(!token){
         res.status(401).send("user is not authenticated")
@@ -18,7 +22,7 @@ router.use((req,res,next)=>{
             req.body.user_name = decoded.user_name
             next()
         }else{
-            res.status(400).send("user is not exist")
+            res.status(401).send("user is not exist")
             return
         }
     }catch(error){
@@ -26,6 +30,9 @@ router.use((req,res,next)=>{
         return
     }
 })
+
+// get all task list
+router.get("/list/all", TaskController.getAllTaskList)
 
 // get task list
 router.get("/list/:pageNum", TaskController.getTaskList)

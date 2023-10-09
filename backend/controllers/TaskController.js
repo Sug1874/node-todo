@@ -7,12 +7,28 @@ const getTaskList = async(req, res) =>{
     const pageNum = req.params.pageNum
     try{
         const [taskNum, taskList] = await Task.getTaskList(user_name, pageNum)
-        if(taskList.length > 0){
+        if(taskList){
             res.status(200).send({task_num: taskNum, tasks: taskList})
         }else{
             res.status(400).end()
         }
     }catch(e){
+        console.log(e)
+        res.status(500).send(e.message)
+    }
+}
+
+const getAllTaskList = async(req, res) =>{
+    const user_name = req.body.user_name
+    try{
+        const taskList = await Task.getAllTaskList(user_name)
+        if(taskList){
+            res.status(200).send({tasks: taskList})
+        }else{
+            res.status(400).end()
+        }
+    }catch(e){
+        console.log(e)
         res.status(500).send(e.message)
     }
 }
@@ -30,6 +46,7 @@ const getTask = async(req, res) =>{
             res.status(400).end()
         }
     }catch(e){
+        console.log(e)
         res.status(500).send(e.message)
     }
 }
@@ -41,6 +58,7 @@ const createTask = async(req, res) =>{
     // task_idのリスト
     const before_tasks = req.body.before_tasks
 
+    console.log("create task")
     try{
         const result = await Task.saveTask(task, before_tasks)
         task.task_id = result['insertId']
@@ -49,6 +67,7 @@ const createTask = async(req, res) =>{
         }
         res.status(200).end()
     }catch(e){
+        console.log(e)
         res.status(500).send(e.message)
     }
 }
@@ -77,6 +96,7 @@ const updateTask = async(req, res) => {
             res.status(200).end()
         }
     }catch(e){
+        console.log(e)
         res.status(500).send(e.message)
     }
 }
@@ -93,12 +113,14 @@ const deleteTask = async(req, res) =>{
             res.status(400).end()
         }
     }catch(e){
+        console.log(e)
         res.status(500).send(e.message)
     }
 }
 
 module.exports = {
     getTaskList: getTaskList,
+    getAllTaskList: getAllTaskList,
     getTask: getTask,
     createTask: createTask,
     updateTask: updateTask,

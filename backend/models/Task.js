@@ -4,9 +4,14 @@ const getTaskList = async(user_name, pageNum) => {
     const taskNumInPage = 10
     const tasks = await TaskRepository.findAll(user_name)
     if(pageNum < 0){
-        return []
+        return [0, []]
     }
     return [tasks.length, tasks.slice(taskNumInPage*pageNum, taskNumInPage*(pageNum+1))]
+}
+
+const getAllTaskList = async(user_name) => {
+    const tasks = await TaskRepository.findAll(user_name)
+    return tasks
 }
 
 const getTask = async(user_name, task_id) => {
@@ -40,16 +45,12 @@ const getBeforeTasks = async(task_id) => {
     return tasks
 }
 
-const saveBeforeTasks = async(task_id, beforeTasks) => {
-
-}
-
 module.exports = {
     getTaskList: getTaskList,
+    getAllTaskList: getAllTaskList,
     getTask: getTask,
     saveTask: saveTask,
     updateTask: updateTask,
     deleteTask: deleteTask,
     getBeforeTasks: getBeforeTasks,
-    saveBeforeTasks: saveBeforeTasks
 }

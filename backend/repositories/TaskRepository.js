@@ -26,7 +26,7 @@ const find = async(task_id) => {
         user_name: rows[0].user_name,
         title: rows[0].title,
         description: rows[0].description,
-        requireed_days: rows[0].required_days,
+        required_days: rows[0].required_days,
         deadline: rows[0].deadline
     }
 }
@@ -75,20 +75,20 @@ const update = async(task, added_before_tasks, deleted_before_tasks) => {
     var connection = await createConnection()
     await connection.beginTransaction()
     try{
-        let queryString = `UPDATE task SET title='${task.title}' description = '${task.description}', required_days = ${task.required_days}, deadline='${task.deadline}' \
-        WHERE task_id = ${task.task_id} and user_name='${task.user_name}'`
-        [result, fields] = await connection.query(queryString)
+        // let queryString = `UPDATE task SET title='${task.title}', description = '${task.description}', required_days = ${task.required_days}, deadline='${task.deadline}' WHERE task_id = ${task.task_id} and user_name='${task.user_name}'`
+        [result, fields] = await connection.query(`UPDATE task SET title='${task.title}', description = '${task.description}', required_days = ${task.required_days}, deadline='${task.deadline}' WHERE task_id = ${task.task_id} and user_name='${task.user_name}'`)
 
         await Promise.all(deleted_before_tasks.map(async(before_task)=>{
-            await connection.query(`DELETE FROM task_order WHERE after_task_id=${task.task_id}, before_task_id=${before_task.task_id}`)
+            await connection.query(`DELETE FROM task_order WHERE after_task_id=${task.task_id} AND before_task_id=${before_task}`)
         }))
         await Promise.all(added_before_tasks.map(async (before_task) => {
-            await connection.query(`INSERT INTO task_order (after_task_id, before_task_id) VALUES (${task_id}, ${before_task.task_id})`)
+            await connection.query(`INSERT INTO task_order (after_task_id, before_task_id) VALUES (${task.task_id}, ${before_task})`)
         }))
         await connection.commit()
     }catch(error){
         await connection.rollback()
-        return error
+        console.log(error)
+        throw error
     }finally{
         await connection.end()
     }
