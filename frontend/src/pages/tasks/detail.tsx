@@ -243,7 +243,7 @@ const DetailPage = () => {
             </div>
             <div className="detail_item">
                 <span>作業日数</span>
-                <input type="" name="required_days" value={String(taskDetail?.required_days)} onChange={requiredDaysChangeHandler} />
+                <input type="number" name="required_days" value={String(taskDetail?.required_days)} onChange={requiredDaysChangeHandler} />
             </div>
             <div className="detail_item">
                 <span>締め切り</span>

@@ -171,7 +171,7 @@ const CreatePage = () => {
             </div>
             <div className="detail_item">
                 <span>作業日数</span>
-                <input type="" name="required_days" placeholder="作業日数" onChange={requiredDaysChangeHandler} />
+                <input type="number" name="required_days" placeholder="作業日数" onChange={requiredDaysChangeHandler} />
             </div>
             <div className="detail_item">
                 <span>締め切り</span>
