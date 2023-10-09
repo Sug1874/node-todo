@@ -20,9 +20,12 @@ cd ./Docker
 docker-compose up -d --build
 ```
 
+
+
 4. Start backend application
 ```bash
 cd ../backend
+npm install
 node app.js
 ```
 
