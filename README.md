@@ -30,6 +30,7 @@ node app.js
 5. Start frontend application
 ```bash
 cd ../frontend
+npm install
 npm start
 ```
 
