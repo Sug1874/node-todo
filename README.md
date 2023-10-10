@@ -3,6 +3,10 @@
 ## Overview
 This application manages task content, time required, and deadlines. Not only that, it also manages the sequential relationship between tasks, and the system automatically corrects any inconsistencies that arise.
 
+![image](/images/LoginPage.png)
+![image](/images/TaskListPage.png)
+![image](/images/TaskDetailPage.png)
+
 ## How to run
 1. Clone this repository
 ```bash
