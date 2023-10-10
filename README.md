@@ -20,8 +20,6 @@ cd ./Docker
 docker-compose up -d --build
 ```
 
-
-
 4. Start backend application
 ```bash
 cd ../backend
@@ -34,3 +32,6 @@ node app.js
 cd ../frontend
 npm start
 ```
+
+# Technologies
+![image](/images/tech.png)
